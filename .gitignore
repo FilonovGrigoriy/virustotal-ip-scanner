@@ -1,0 +1,34 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Environments
+venv/
+.env/
+.venv/
+
+# Secrets (КРИТИЧНО!)
+.env
+.env.local
+.env.*.local
+*.key
+*.pem
+secrets/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Reports / outputs
+reports/
+*.csv
+*.json

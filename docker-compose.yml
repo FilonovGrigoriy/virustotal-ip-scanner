@@ -1,23 +1,14 @@
 version: "3.8"
 
 services:
-  # ── Redis: кэш результатов обогащения ──
   redis:
     image: redis:7-alpine
     container_name: ti_redis
     restart: unless-stopped
     volumes:
       - redis_data:/data
-    # Для безопасности: без пароля внутри docker-network, 
-    # но в продакшене используйте requirepass
     command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 3s
-      retries: 3
 
-  # ── TI Enricher API ──
   app:
     build: .
     container_name: ti_enricher_api
@@ -28,24 +19,13 @@ services:
       - VT_API_KEY=${VT_API_KEY}
       - ABUSEIPDB_API_KEY=${ABUSEIPDB_API_KEY}
       - OTX_API_KEY=${OTX_API_KEY}
-      - REDIS_URL=redis://redis:6379/0
       - VT_DELAY=15.0
       - ABUSEIPDB_DELAY=1.0
       - OTX_DELAY=0.5
     depends_on:
-      redis:
-        condition: service_healthy
+      - redis
     volumes:
       - ./reports:/app/reports
-    # Лимиты ресурсов (безопасность + стабильность)
-    deploy:
-      resources:
-        limits:
-          cpus: '1.0'
-          memory: 512M
-        reservations:
-          cpus: '0.25'
-          memory: 128M
 
 volumes:
   redis_data:
