@@ -18,6 +18,7 @@ services:
     environment:
       - VT_API_KEY=${VT_API_KEY}
       - ABUSEIPDB_API_KEY=${ABUSEIPDB_API_KEY}
+      - REDIS_URL=redis://redis:6379/0
       - OTX_API_KEY=${OTX_API_KEY}
       - VT_DELAY=15.0
       - ABUSEIPDB_DELAY=1.0
